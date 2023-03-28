@@ -129,7 +129,7 @@ export const NewCommentForm: React.FC<Props> = ({ postId }) => {
 
       <div className='field'>
         <label className='label' htmlFor='comment-body'>
-          IComment Text
+          Comment Text
         </label>
 
         <div className='control'>

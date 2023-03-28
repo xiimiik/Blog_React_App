@@ -1,5 +1,5 @@
 # React Post Blog
-This is a simple blog application built with React, TypeScript, Redux Toolkit (RTK), and Bulma for styling. It allows users to create, read, update, and delete blog posts.
+This is a simple blog application built with React, TypeScript, Redux Toolkit (RTK), and Bulma for styling. It allows users to create, read, update, and delete blog posts. ESLint and Prettier are used for code style consistency.
 
 Demo link --> [CLICK ME](https://xiimiik.github.io/Blog_React_App/)
 
