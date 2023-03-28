@@ -1,9 +1,9 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const defaultValue = {
   selectedPostId: 0,
   editPostId: 0,
-}
+};
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -14,9 +14,9 @@ const postsSlice = createSlice({
     },
     edit(state, action) {
       state.editPostId = action.payload;
-    }
-  }
-})
+    },
+  },
+});
 
-export const { select, edit } = postsSlice.actions
-export default postsSlice.reducer
+export const { select, edit } = postsSlice.actions;
+export default postsSlice.reducer;

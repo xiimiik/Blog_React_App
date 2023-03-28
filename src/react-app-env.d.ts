@@ -4,8 +4,6 @@ import { StringSchema } from 'yup';
 
 declare module 'Yup' {
   interface StringSchema<T> {
-    whitespace(
-      message: string,
-    ): StringSchema<T>;
+    whitespace(message: string): StringSchema<T>;
   }
 }

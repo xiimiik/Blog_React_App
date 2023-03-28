@@ -19,10 +19,7 @@ export const postAPI = createApi({
       }),
       providesTags: ['Comments'],
     }),
-    updatePostById: builder.mutation<
-      void,
-      { id: number; body: { title: string; body: string } }
-    >({
+    updatePostById: builder.mutation<void, { id: number; body: { title: string; body: string } }>({
       query: ({ id, body }) => ({
         url: `/posts/${id}`,
         method: 'PUT',
@@ -37,7 +34,7 @@ export const postAPI = createApi({
       }),
       invalidatesTags: ['Posts'],
     }),
-    createComment: builder.mutation<any, ICommentData>({
+    createComment: builder.mutation<void, ICommentData>({
       query: (body) => ({
         url: '/comments',
         method: 'POST',

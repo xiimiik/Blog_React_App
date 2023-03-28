@@ -8,7 +8,7 @@ import { RootState } from '../store';
 
 export const PostDetails: React.FC = () => {
   const [isFormOpened, setIsFormOpened] = useState(false);
-  
+
   const { selectedPostId } = useSelector((state: RootState) => state.posts);
   const { data: post, isError, isFetching } = useFetchPostByIdQuery(selectedPostId);
 
