@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { IPost } from '../types/Post';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { edit, select } from '../store/postsSlice';
+import { create, edit, select } from '../store/postsSlice';
 
 interface Props {
   post: IPost;
@@ -14,14 +14,16 @@ export const PostPreview: FC<Props> = ({ post }) => {
   const { editPostId, selectedPostId } = useSelector((state: RootState) => state.posts);
   const dispatch = useDispatch();
 
-  const handlePostSelection = (event: React.MouseEvent<HTMLButtonElement>) => {
-    dispatch(select(Number(event.currentTarget.value)));
+  const handlePostSelection = () => {
+    dispatch(select(id));
     dispatch(edit(0));
+    dispatch(create(false));
   };
 
-  const handleForm = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleForm = () => {
     dispatch(select(0));
-    dispatch(edit(Number(event.currentTarget.value)));
+    dispatch(edit(id));
+    dispatch(create(false));
   };
 
   const handleClose = () => {
@@ -36,22 +38,12 @@ export const PostPreview: FC<Props> = ({ post }) => {
       <td className='has-text-right is-flex is-justify-content-flex-end'>
         {selectedPostId !== id && editPostId !== id && (
           <>
-            <button
-              type='button'
-              className='button is-warning is-light mr-2'
-              onClick={handleForm}
-              value={id}
-            >
+            <a href='#details' className='button is-warning is-light mr-2' onClick={handleForm}>
               Edit
-            </button>
-            <button
-              type='button'
-              className='button is-link is-light'
-              onClick={handlePostSelection}
-              value={id}
-            >
+            </a>
+            <a href='#details' className='button is-link is-light' onClick={handlePostSelection}>
               Open
-            </button>
+            </a>
           </>
         )}
         {(selectedPostId === id || editPostId === id) && (

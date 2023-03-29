@@ -19,7 +19,15 @@ export const postAPI = createApi({
       }),
       providesTags: ['Comments'],
     }),
-    updatePostById: builder.mutation<void, { id: number; body: { title: string; body: string } }>({
+    createPost: builder.mutation<void, Pick<IPost, 'body' | 'title'>>({
+      query: (body) => ({
+        url: 'posts',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Posts'],
+    }),
+    updatePostById: builder.mutation<void, { id: number; body: Pick<IPost, 'body' | 'title'> }>({
       query: ({ id, body }) => ({
         url: `/posts/${id}`,
         method: 'PUT',
@@ -51,4 +59,5 @@ export const {
   useUpdatePostByIdMutation,
   useCreateCommentMutation,
   useDeletePostByIdMutation,
+  useCreatePostMutation,
 } = postAPI;

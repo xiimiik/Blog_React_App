@@ -1,21 +1,14 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-import {
-  useDeletePostByIdMutation,
-  useFetchAllPostsQuery,
-  useUpdatePostByIdMutation,
-} from '../services/posts';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { useFetchAllPostsQuery, useCreatePostMutation } from '../services/posts';
 import { Loader } from './Loader';
-import { edit } from '../store/postsSlice';
+import { useDispatch } from 'react-redux';
+import { create } from '../store/postsSlice';
 
-export const EditPost: React.FC = () => {
-  const { editPostId } = useSelector((state: RootState) => state.posts);
-  const dispatch = useDispatch();
+export const CreatePost: React.FC = () => {
   const posts = useFetchAllPostsQuery(0);
-  const [updatePost, updateResult] = useUpdatePostByIdMutation();
-  const [deletePost, deleteResult] = useDeletePostByIdMutation();
+  const dispatch = useDispatch();
+  const [createPost, createResult] = useCreatePostMutation();
 
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -38,7 +31,7 @@ export const EditPost: React.FC = () => {
     return true;
   };
 
-  const onPostUpdate = async () => {
+  const onPostCreate = async () => {
     if (!validate()) {
       return;
     }
@@ -46,32 +39,22 @@ export const EditPost: React.FC = () => {
     setIsError(false);
 
     try {
-      const editedPost = {
+      const newPost = {
         title,
         body,
       };
 
-      await updatePost({ id: editPostId, body: editedPost });
+      await createPost(newPost);
     } catch {
       setIsError(true);
     } finally {
-      setBody('');
+      dispatch(create(false));
+      resetForm();
       posts.refetch();
     }
   };
 
-  const onPostDelete = async () => {
-    try {
-      await deletePost(editPostId);
-    } catch {
-      setIsError(true);
-    } finally {
-      dispatch(edit(0));
-      posts.refetch();
-    }
-  };
-
-  return deleteResult.isLoading || updateResult.isLoading ? (
+  return createResult.isLoading ? (
     <Loader />
   ) : (
     <div className='content'>
@@ -79,10 +62,10 @@ export const EditPost: React.FC = () => {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            onPostUpdate();
+            onPostCreate();
           }}
         >
-          <h3>{`Post #${editPostId}`}</h3>
+          <h3>Create new post</h3>
           <div className='field'>
             <label className='label' htmlFor='comment-author-name'>
               Title
@@ -136,28 +119,20 @@ export const EditPost: React.FC = () => {
             {isError && !body && <p className='help is-danger'>Enter some text</p>}
           </div>
 
-          <div className='is-flex is-justify-content-space-between'>
-            <div className='field is-grouped'>
-              <div className='control'>
-                <button
-                  type='submit'
-                  className={classNames('button is-link', {
-                    'is-loading': posts.isLoading,
-                  })}
-                >
-                  Update
-                </button>
-              </div>
-              <div className='control'>
-                <button type='reset' className='button is-link is-light' onClick={resetForm}>
-                  Clear
-                </button>
-              </div>
-            </div>
-
+          <div className='field is-grouped'>
             <div className='control'>
-              <button type='reset' className='button is-danger' onClick={onPostDelete}>
-                Delete
+              <button
+                type='submit'
+                className={classNames('button is-link', {
+                  'is-loading': posts.isLoading,
+                })}
+              >
+                Create
+              </button>
+            </div>
+            <div className='control'>
+              <button type='reset' className='button is-link is-light' onClick={resetForm}>
+                Clear
               </button>
             </div>
           </div>
